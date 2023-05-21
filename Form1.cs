@@ -8,6 +8,14 @@ namespace HessdalenTools
 {
     public partial class Form1 : Form
     {
+        private readonly Dictionary<string, string> accessEntityToLetter =
+                new Dictionary<string, string>() { { "&AElig;", "Æ" },
+                                                    {"&aelig;", "æ" },
+                                                    {"&Oslash;", "Ø" },
+                                                    {"&oslash;", "ø" },
+                                                    {"&Aring;", "Å" },
+                                                    {"&aring;", "å" }};
+
         public Form1()
         {
             InitializeComponent();
@@ -15,13 +23,7 @@ namespace HessdalenTools
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Dictionary<string,string> accessEntityToLetter = 
-                new Dictionary<string, string>() { { "&AElig;", "Æ" },
-                                                    {"&aelig;", "æ" },
-                                                    {"&Oslash;", "Ø" },
-                                                    {"&oslash;", "ø" },
-                                                    {"&Aring;", "Å" },
-                                                    {"&aring;", "å" }};
+            
 
             var extensions = new List<string>() { "htm", "html" };
 
@@ -63,8 +65,6 @@ namespace HessdalenTools
 
                 if (srEN != null && srNO != null)
                 {
-                    Debug.WriteLine($"Found both paths for {i.ToString()}");
-
                     StreamReader en = new StreamReader(filePathsEN.Where(x => x.Contains(i.ToString())).FirstOrDefault());
 
                     StreamReader no = new StreamReader(filePathsNO.Where(x => x.Contains(i.ToString())).FirstOrDefault());
@@ -83,7 +83,6 @@ namespace HessdalenTools
                             int openTags = 0;
                             int closedTags = 0;
 
-
                             for (int j = 0; j < lineSampler.Length; j++)
                             {
                                 if (lineSampler[j] == '<') 
@@ -97,17 +96,17 @@ namespace HessdalenTools
                                     closedTags++; 
                                 }
 
-                                if (openTags == 2 && closedTags == 2)
+                                else if (openTags == 2 && closedTags == 2)
                                 {
                                     report.Date += lineSampler[j];
                                 }
 
-                                if (openTags == 4 && closedTags == 4)
+                                else if (openTags == 4 && closedTags == 4)
                                 {
                                     report.Time += lineSampler[j];
                                 }
 
-                                if (openTags == 6 && closedTags == 6)
+                                else if (openTags == 6 && closedTags == 6)
                                 {
                                     report.ObserverPlaceName += lineSampler[j];
                                 }
