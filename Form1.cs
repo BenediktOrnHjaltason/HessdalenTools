@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Diagnostics;
 using System.Linq;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace HessdalenTools
 {
@@ -254,10 +256,14 @@ namespace HessdalenTools
                         ObserverName = norwegianReports[i].ObserverName,
                         ObserverPlaceName = norwegianReports[i].ObserverPlaceName,
                         Description_EN = englishMatches[0].Description_EN,
-                        Description_NO = norwegianReports[0].Description_NO,
+                        Description_NO = norwegianReports[i].Description_NO,
                     });
                 }
             }
+
+            var serialized = JsonConvert.SerializeObject(result, Formatting.Indented);
+
+            File.WriteAllText("C:\\Users\\Admin\\Desktop\\ObservationMatching\\Matches.JSON", serialized);
 
             Debug.WriteLine($"Merged unequivocal results: {mergedReportsCount}");
 
