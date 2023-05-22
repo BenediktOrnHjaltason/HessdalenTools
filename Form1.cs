@@ -187,39 +187,50 @@ namespace HessdalenTools
             {
                 if (report.Date != null)
                 {
-                    report.Date.TrimStart();
-                    report.Date.TrimEnd();
+                    report.Date = report.Date.TrimStart();
+                    report.Date = report.Date.TrimEnd();
+
+                    while(true)
+                    {
+                        if (report.Date != null && report.Date.Length > 0 && (report.Date[0] < 46 || report.Date[0] > 57))
+                        {
+                            Debug.WriteLine($"Removing {report.Date[0]}");
+                            report.Date = report.Date.Remove(0, 1);
+                        }
+                        else break;
+                    }
+
                 }
 
                 if (report.Time != null)
                 {
-                    report.Time.TrimStart();
-                    report.Time.TrimEnd();
+                    report.Time = report.Time.TrimStart();
+                    report.Time = report.Time.TrimEnd();
                 }
 
                 if (report.ObserverName != null)
                 {
-                    report.ObserverName.TrimStart();
-                    report.ObserverName.TrimEnd();
+                    report.ObserverName = report.ObserverName.TrimStart();
+                    report.ObserverName = report.ObserverName.TrimEnd();
                 }
 
                 if (report.ObserverPlaceName != null)
                 {
-                    report.ObserverPlaceName.TrimStart();
-                    report.ObserverPlaceName.TrimEnd();
+                    report.ObserverPlaceName = report.ObserverPlaceName.TrimStart();
+                    report.ObserverPlaceName = report.ObserverPlaceName.TrimEnd();
                 }
                 
 
                 if (report.Description_NO != null)
                 {
-                    report.Description_NO.TrimStart();
-                    report.Description_NO.TrimEnd();
+                    report.Description_NO = report.Description_NO.TrimStart();
+                    report.Description_NO = report.Description_NO.TrimEnd();
                 }
 
                 if (report.Description_EN != null)
                 {
-                    report.Description_EN.TrimStart();
-                    report.Description_EN.TrimEnd();
+                    report.Description_EN = report.Description_EN.TrimStart();
+                    report.Description_EN = report.Description_EN.TrimEnd();
                 }
             }
         }
@@ -259,6 +270,8 @@ namespace HessdalenTools
                         Description_NO = norwegianReports[i].Description_NO,
                     });
                 }
+
+                else Debug.WriteLine($"Matched with more than 1 report: {englishMatches.Count()}");
             }
 
             var serialized = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -279,5 +292,6 @@ namespace HessdalenTools
         public string Description_EN;
         public string ObserverName;
         public string ObserverPlaceName;
+        public bool delete;
     }
 }
